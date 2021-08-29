@@ -10,6 +10,7 @@
     />
     <button
       type="button"
+      :disabled="textMessage === ''"
       @click="sendMessage"
       class="send__btn">
       Send
@@ -34,7 +35,7 @@ export default {
 
     async sendMessage(){
       if(this.textMessage !==  ''){
-        this.$http
+        await this.$http
           .post('/messages/create', {
             username: this.getUser().username,
             text: this.textMessage,

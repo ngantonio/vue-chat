@@ -13,7 +13,7 @@
 
         <div v-else class="message__container justify__start">
           <div class="message__box container__right">
-             <span class="user__id">{{item.username}}</span>
+             <span class="user__id">@{{item.username}}</span>
             <p class="text__message">{{ item.text }}</p>
 
           </div>
@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import messageListArr from '@/utils/utils';
+
 import { mapGetters } from 'vuex'
 import io from 'socket.io-client'
 import moment from 'moment';
@@ -42,20 +42,18 @@ export default {
     };
   },
 
-  created() {
+  async created() {
     this.username_local = this.getUser().username;
-    const username = this.username_local;
-
-    socket.emit('join', { username }, (error) => {
-      if(error) {
-        console.log(error)
-      }
-    });
+    await this.getHistoricMessages()
+    this.roomJoin()
     this.listenNewMessages()
   },
   filters: {
     format(date) {
-      return moment(date).format('hh:mm A');
+      const  today = moment(Date.now()).format('DD-MM-YYYY');
+      const messageDate = moment(date).format('DD-MM-YYYY');
+
+      return messageDate === today ?  moment(date).format('hh:mm A'):  messageDate;
     },
   },
   methods: {
@@ -63,10 +61,26 @@ export default {
 
     listenNewMessages(){
       socket.on("NEW_MESSAGE", fetchedData => {
-        console.log("NUEVO EVENTO")
         this.messages.push(fetchedData)
-        console.log(this.messages)
       })
+    },
+    roomJoin(){
+      const username = this.username_local;
+      socket.emit('join', { username }, (error) => {
+        if(error) {
+          console.log(error)
+        }
+      });
+    },
+    async getHistoricMessages(){
+      await this.$http
+        .get('/messages/all')
+        .then((resp) => {
+          this.messages = resp.data.messages;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
 
   }
