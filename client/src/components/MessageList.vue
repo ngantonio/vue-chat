@@ -28,7 +28,7 @@
 
 <script>
 
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import io from 'socket.io-client'
 import moment from 'moment';
 var socket = io.connect('http://localhost:4000');
@@ -47,6 +47,7 @@ export default {
     await this.getHistoricMessages()
     this.roomJoin()
     this.listenNewMessages()
+    this.listenToRoomUsers()
   },
   filters: {
     format(date) {
@@ -57,7 +58,8 @@ export default {
     },
   },
   methods: {
-    ...mapGetters(['getUser']),
+    ...mapGetters(['getUser', 'onlineUsers']),
+    ...mapActions(['setOnlineUsers']),
 
     listenNewMessages(){
       socket.on("NEW_MESSAGE", fetchedData => {
@@ -81,7 +83,13 @@ export default {
         .catch((err) => {
           console.log(err);
         });
-    }
+    },
+
+    listenToRoomUsers(){
+      socket.on("LISTEN_ROOM", ( data ) => {
+        this.setOnlineUsers(data.users)
+      })
+    },
 
   }
 };

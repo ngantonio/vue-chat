@@ -10,6 +10,7 @@ export default new Vuex.Store({
    state: {
     // User
     user: JSON.parse(localStorage.getItem('user')) || null,
+    onlineUsers: []
   },
   mutations: {
     // Users
@@ -24,6 +25,9 @@ export default new Vuex.Store({
       state.status = '';
       state.user = null;
     },
+    setOnlineUsers(state, userList) {
+      state.onlineUsers = userList;
+    }
 
   },
   actions: {
@@ -32,13 +36,11 @@ export default new Vuex.Store({
       return new Promise((resolve, reject) => {
         axios({ url: `${authUrl}/auth/login`, data: user, method: 'POST' })
           .then((resp) => {
-            console.log(resp.data.result);
             localStorage.setItem('user', JSON.stringify(resp.data.result));
             commit('auth_success', resp.data.result);
             resolve(resp);
           })
           .catch((err) => {
-            console.log(err);
             commit('auth_error');
             localStorage.removeItem('token');
             reject(err);
@@ -49,13 +51,11 @@ export default new Vuex.Store({
       return new Promise((resolve, reject) => {
         axios({ url: `${authUrl}/auth/register`, data: user, method: 'POST' })
           .then((resp) => {
-            console.log(resp.data.result);
             localStorage.setItem('user', JSON.stringify(resp.data.result));
             commit('auth_success', resp.data.result);
             resolve(resp);
           })
           .catch((err) => {
-            console.log(err);
             commit('auth_error', err);
             localStorage.removeItem('token');
             reject(err);
@@ -69,10 +69,14 @@ export default new Vuex.Store({
         resolve();
       });
     },
+    setOnlineUsers({ commit }, userList) {
+      commit('setOnlineUsers', userList );
+    }
   },
   getters: {
     isLoggedIn: (state) => !!state.user,
     getUser: (state) => state.user,
+    onlineUsers: (state) => state.onlineUsers,
   },
   modules: {
   },
