@@ -1,0 +1,19 @@
+{
+  "name": "chat_api",
+  "version": "1.0.0",
+  "description": "REST API for the operation of a multi-user chat using sockets and mongoDB",
+  "main": "index.js",
+  "scripts": {
+    "start": "node .",
+    "dev": "nodemon ."
+  },
+  "type": "module",
+  "keywords": [
+    "chat",
+    "node",
+    "socket",
+    "mongodb"
+  ],
+  "author": "Gabriel Antonio Oliveira",
+  "license": "ISC"
+}
