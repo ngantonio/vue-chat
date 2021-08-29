@@ -1,7 +1,7 @@
 <template>
   <div class="bar">
     <div class="bar__info">
-      <h5>Sala</h5>
+      <p>Live Chat</p>
     </div>
   </div>
 </template>

@@ -7,6 +7,7 @@
         <div class="outer__container">
           <div class="chat__container">
             <BarChat />
+            <MessageList />
             <MessageInput />
           </div>
         </div>
@@ -22,12 +23,14 @@
 <script>
 import Navbar from '@/components/Navbar.vue';
 import BarChat from '@/components/BarChat.vue';
+import MessageList from '@/components/MessageList.vue';
 import MessageInput from '@/components/MessageInput.vue';
 
 export default {
   components: {
     Navbar,
     BarChat,
+    MessageList,
     MessageInput,
   },
 };
