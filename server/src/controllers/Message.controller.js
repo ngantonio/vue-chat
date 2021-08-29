@@ -11,20 +11,17 @@ export const getAllMessages = async (req, res) => {
 }
 
 export const createMessage = async (req, res) => {
-
   const { username, text } = req.body;
   
   if (!username || username === '' || !text || text === '')
     return res.status(400).json({ "ok": false, 'msg': 'Username and text message are required' })
   
   try {
-   
     // create Message
     let newMessage = new MessageModel(req.body);
   
     // save Message
     await newMessage.save();
-  
     return res.status(200).json({ "ok": true, "result": newMessage })
     
   } catch (error) {

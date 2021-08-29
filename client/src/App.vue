@@ -13,6 +13,7 @@
   -moz-osx-font-smoothing: grayscale;
   color: #000;
   background-color: #f2f3f5;
+  height: 100vh;
 }
 
 #nav {
