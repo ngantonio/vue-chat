@@ -1,5 +1,3 @@
 @import './variables';
-
-body {
-  background-color: $primary;
-}
+@import './chat';
+@import './chatBar';

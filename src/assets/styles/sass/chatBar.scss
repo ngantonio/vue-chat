@@ -1,0 +1,23 @@
+// BAR
+
+.bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: $primary;
+  border-radius: 10px 10px 0 0;
+  height: 60px;
+  width: 100%;
+}
+
+.bar__info {
+  flex: 0.5;
+  display: flex;
+  align-items: center;
+  margin-left: 5%;
+  color: white;
+}
+
+.online__icon {
+  margin-right: 5%;
+}
