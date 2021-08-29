@@ -12,9 +12,9 @@
           <b-nav-item-dropdown right>
             <!-- Using 'button-content' slot -->
             <template #button-content>
-              <em>User</em>
+              <em>{{ username }}</em>
             </template>
-            <b-dropdown-item href="#">Sign Out</b-dropdown-item>
+            <b-dropdown-item href="#" @click="Logout">Logout</b-dropdown-item>
           </b-nav-item-dropdown>
         </b-navbar-nav>
       </b-collapse>
@@ -24,8 +24,27 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from 'vuex';
 export default {
+  
   name: 'Navbar',
+  data(){
+    return {
+      username: '',
+    }
+  },
+  created(){
+    this.username = this.getUser().username;
+  },
+  methods:{
+    ...mapGetters(['getUser']),
+    ...mapActions(['logout']),
+
+    Logout(){
+      this.logout()
+      this.$router.push('/')
+    }
+  }
 };
 </script>
 

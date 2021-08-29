@@ -1,4 +1,7 @@
 import MessageModel from '../models/Message.model.js'
+import { getInstance } from '../socketHandler.js'
+
+
 
 export const getAllMessages = async (req, res) => {
   
@@ -22,6 +25,10 @@ export const createMessage = async (req, res) => {
   
     // save Message
     await newMessage.save();
+
+    const instance = getInstance();
+    instance.to('liveroom').emit('NEW_MESSAGE', { username: newMessage.username, text: newMessage.text, createdAt: newMessage.createdAt  })
+
     return res.status(200).json({ "ok": true, "result": newMessage })
     
   } catch (error) {

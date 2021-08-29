@@ -39,7 +39,7 @@ export default {
       if(this.username !== ''){
 
         this.$store.dispatch('login', {
-          username: this.username,
+          username: this.username.toLowerCase(),
         })
         .then(() => this.$router.push('/chat'))
         .catch((err) => {
