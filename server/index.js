@@ -4,7 +4,7 @@ import cors from 'cors';
 import {Server, Socket} from 'socket.io';
 import http from "http";
 
-// import messagesRoutes from './src/routes/Message.routes.js'
+import messagesRoutes from './src/routes/Message.routes.js'
 import authRoutes from './src/routes/Auth.routes.js'
 
 // create server
@@ -35,7 +35,7 @@ api.use(cors());
 api.use(json({ limit: "30mb", extended: true }))
 
 // Create and configure routes and Endpoints 
-// api.use('/api/messages', messagesRoutes)
+api.use('/api/messages', messagesRoutes)
 api.use('/api/auth', authRoutes)
 
 // server listenind
