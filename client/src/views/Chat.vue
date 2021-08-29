@@ -3,7 +3,7 @@
   <Navbar />
  <div class="container">
     <b-row>
-      <b-col md="6">
+      <b-col lg="6" md="8">
         <div class="outer__container">
           <div class="chat__container">
             <BarChat />

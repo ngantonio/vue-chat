@@ -3,13 +3,16 @@ import BootstrapVue from 'bootstrap-vue';
 import App from './App.vue';
 import router from './router';
 import store from './store';
+import Axios from 'axios';
 
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-vue/dist/bootstrap-vue.css';
 
 Vue.config.productionTip = false;
+Vue.prototype.$http = Axios;
 
 Vue.use(BootstrapVue);
+
 
 new Vue({
   router,
