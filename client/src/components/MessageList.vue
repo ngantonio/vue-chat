@@ -32,12 +32,7 @@ export default {
   name: 'MessageList',
   data() {
     return {
-      allMessages: [],
-      liveMessages: [],
       username_local: '',
-      searchText: '',
-      searchResult: [],
-      searchContext: false,
     };
   },
 
@@ -48,6 +43,7 @@ export default {
     this.listenNewMessages()
     this.listenToRoomUsers()
   },
+  computed: mapGetters(['allMessages', 'searchContext']), 
   filters: {
     format(date) {
       const  today = moment(Date.now()).format('DD-MM-YYYY');
@@ -58,12 +54,11 @@ export default {
   },
   methods: {
     ...mapGetters(['getUser', 'onlineUsers']),
-    ...mapActions(['setOnlineUsers']),
+    ...mapActions(['setOnlineUsers', 'addNewMessage', 'setLiveChatContext']),
 
     scroll(){
       this.$nextTick(() => {
         let container = this.$refs["chat_window"];
-        console.log(container)
         container.scrollTop = container.scrollHeight;
       });
      
@@ -76,9 +71,10 @@ export default {
          * no haga scroll
          */
         if(this.searchContext){
-          this.liveMessages.push(fetchedData)
+          console.log("esta entrando")
+          this.addNewMessage(fetchedData)
         }else{
-          this.allMessages.push(fetchedData)
+          this.addNewMessage(fetchedData)
           this.scroll()
         }
         
@@ -96,7 +92,7 @@ export default {
       await this.$http
         .get('/messages/all')
         .then((resp) => {
-          this.allMessages = resp.data.messages;
+          this.setLiveChatContext(resp.data.messages)
           this.scroll()
         })
         .catch((err) => {
@@ -109,17 +105,6 @@ export default {
         this.setOnlineUsers(data.users)
       })
     },
-    async search(){
-      await this.$http
-        .get(`/messages/search?query=${this.searchText}`)
-        .then((resp) => {
-          this.allMessages = resp.result;
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }
-
   }
 };
 

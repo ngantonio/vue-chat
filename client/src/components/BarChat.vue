@@ -28,6 +28,7 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from 'vuex'
 export default {
   name: 'BarChat',
   props: {
@@ -43,9 +44,10 @@ export default {
 
   },
   methods:{
-
+    ...mapActions(['setOnlineUsers', 'setSearchContext', 'switchContext']),
     backBtn(){
       this.showSearchBar = false
+      this.switchContext();
     },
 
     searchBtn(){
@@ -56,13 +58,16 @@ export default {
         await this.$http
           .get(`/messages/search?query=${this.searchText}`)
           .then((resp) => {
-            console.log(resp.data.result)
+            this.setSearchContext(resp.data.result)
           })
           .catch((err) => {
-            console.log(err);
+            this.$bvToast.toast(`There are no matches for "${this.searchText}"`, {
+              title: 'Info',
+              variant: 'info',
+              solid: true,
+            })
           });
-
-          this.searchText = ''
+        this.searchText = ''
       }
     }
   }

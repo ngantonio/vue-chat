@@ -5,7 +5,7 @@
       type="text"
       placeholder="Type a message ..."
       v-model="textMessage"
-      @keyup.enter="sendMessage"
+      @keyup.enter="textMessage !== ''? sendMessage() : null"
 
     />
     <button
@@ -47,8 +47,6 @@ export default {
             console.log(err);
           });
         this.textMessage = '';
-      }else{
-        console.log("no se puede enviar un mesaje vacio")
       }
     }
     
