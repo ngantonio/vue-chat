@@ -3,7 +3,7 @@
   <Navbar />
  <div class="container">
     <b-row>
-      <b-col md="4" offset="2">
+      <b-col md="4" class="users__col">
         <div class="outer__container">        
           <b-list-group>
             <b-list-group-item v-for="(user, index) in onlineUsers" :key="index">@{{ user.username }}</b-list-group-item>
@@ -11,7 +11,7 @@
           </b-list-group>
         </div>
       </b-col>
-      <b-col lg="6" md="8">
+      <b-col lg="8" md="8" >
         <div class="outer__container">
           <div class="chat__container">
             <BarChat />

@@ -3,8 +3,7 @@
 
 .list__container {
   padding: 5% 0;
-  overflow-y: auto;
-  flex: auto;
+  overflow-y: scroll;
 }
 
 .message__box {

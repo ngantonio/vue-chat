@@ -1,8 +1,7 @@
 <template>
-
-   <div class="list__container" ref="chat_window">
-     <div v-for="(item, index) in messages" :key="index">
-       
+  <!-- START CHAT CONTAINER -->
+  <div class="list__container" ref="chat_window">
+    <div v-for="(item, index) in allMessages" :key="index">
         <div v-if="item.username === username_local" class="message__container justify__end">
           <span class="time pr-10"> {{ item.createdAt | format }}</span>
           <div class="message__box container__left" >
@@ -13,22 +12,17 @@
 
         <div v-else class="message__container justify__start">
           <div class="message__box container__right">
-             <span class="user__id">@{{item.username}}</span>
+            <span class="user__id">@{{item.username}}</span>
             <p class="text__message">{{ item.text }}</p>
-
           </div>
           <span class="time pl-10"> {{ item.createdAt | format }}</span>
-
         </div>
-
-     </div>
-     
+    </div>
   </div>
-
+  <!-- END CHAT CONTAINER -->
 </template>
 
 <script>
-
 import { mapGetters, mapActions } from 'vuex'
 import io from 'socket.io-client'
 import moment from 'moment';
@@ -38,9 +32,12 @@ export default {
   name: 'MessageList',
   data() {
     return {
-      messages: [],
+      allMessages: [],
+      liveMessages: [],
       username_local: '',
-      ref_w: null,
+      searchText: '',
+      searchResult: [],
+      searchContext: false,
     };
   },
 
@@ -66,14 +63,25 @@ export default {
     scroll(){
       this.$nextTick(() => {
         let container = this.$refs["chat_window"];
+        console.log(container)
         container.scrollTop = container.scrollHeight;
       });
      
     },
     listenNewMessages(){
       socket.on("NEW_MESSAGE", fetchedData => {
-        this.messages.push(fetchedData)
-        this.scroll()
+        /**
+         * Si estoy en un contexto de busqueda, quiero que los mensajes que 
+         * vayan llegando se almacenenen en otra lista, y que el chat
+         * no haga scroll
+         */
+        if(this.searchContext){
+          this.liveMessages.push(fetchedData)
+        }else{
+          this.allMessages.push(fetchedData)
+          this.scroll()
+        }
+        
       })
     },
     roomJoin(){
@@ -88,7 +96,7 @@ export default {
       await this.$http
         .get('/messages/all')
         .then((resp) => {
-          this.messages = resp.data.messages;
+          this.allMessages = resp.data.messages;
           this.scroll()
         })
         .catch((err) => {
@@ -101,6 +109,16 @@ export default {
         this.setOnlineUsers(data.users)
       })
     },
+    async search(){
+      await this.$http
+        .get(`/messages/search?query=${this.searchText}`)
+        .then((resp) => {
+          this.allMessages = resp.result;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
 
   }
 };

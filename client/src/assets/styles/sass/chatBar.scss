@@ -4,20 +4,35 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background-color: $primary;
+  background-color: #1565C0;
   border-radius: 10px 10px 0 0;
-  height: 60px;
   width: 100%;
-  padding-top: 10px;
+  padding: 15px;
 }
 
-.bar__info {
+.bar__info__left {
   flex: 0.5;
   display: flex;
   align-items: center;
   margin-left: 5%;
   color: white;
 }
+
+.bar__info__right {
+  display: flex;
+  flex: 0.5;
+  justify-content: flex-end;
+  margin-right: 5%;
+}
+
+.bar__search{  
+  background-color: #1565C0;
+  border-radius: 10px 10px 0 0;
+  width: 100%;
+  padding: 15px;
+  color: white;
+}
+
 
 .online__icon {
   margin-right: 5%;

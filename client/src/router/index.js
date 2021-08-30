@@ -35,7 +35,7 @@ router.beforeEach((to, from, next) => {
     }
   } else {
     if (store.getters.isLoggedIn) {
-      next('/Chat');
+      next('/chat');
     }
     next(); 
   }
