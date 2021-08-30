@@ -3,7 +3,7 @@
 
 .list__container {
   padding: 5% 0;
-  overflow: auto;
+  overflow-y: auto;
   flex: auto;
 }
 
@@ -34,7 +34,7 @@
   justify-content: flex-end;
   padding: 0 2%;
   margin-top: 3px;
-  margin-bottom: 20px
+  margin-bottom: 10px
 }
 
 .user__id {

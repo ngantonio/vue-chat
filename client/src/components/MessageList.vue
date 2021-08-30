@@ -1,11 +1,11 @@
 <template>
 
-   <div class="list__container">
+   <div class="list__container" ref="chat_window">
      <div v-for="(item, index) in messages" :key="index">
        
         <div v-if="item.username === username_local" class="message__container justify__end">
           <span class="time pr-10"> {{ item.createdAt | format }}</span>
-          <div class="message__box container__left">
+          <div class="message__box container__left" >
             <span class="user__id">You</span>
             <p class="messageText">{{ item.text }}</p>
           </div>
@@ -22,6 +22,7 @@
         </div>
 
      </div>
+     
   </div>
 
 </template>
@@ -38,7 +39,8 @@ export default {
   data() {
     return {
       messages: [],
-      username_local: ''
+      username_local: '',
+      ref_w: null,
     };
   },
 
@@ -61,9 +63,17 @@ export default {
     ...mapGetters(['getUser', 'onlineUsers']),
     ...mapActions(['setOnlineUsers']),
 
+    scroll(){
+      this.$nextTick(() => {
+        let container = this.$refs["chat_window"];
+        container.scrollTop = container.scrollHeight;
+      });
+     
+    },
     listenNewMessages(){
       socket.on("NEW_MESSAGE", fetchedData => {
         this.messages.push(fetchedData)
+        this.scroll()
       })
     },
     roomJoin(){
@@ -79,6 +89,7 @@ export default {
         .get('/messages/all')
         .then((resp) => {
           this.messages = resp.data.messages;
+          this.scroll()
         })
         .catch((err) => {
           console.log(err);
