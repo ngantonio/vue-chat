@@ -36,3 +36,23 @@ export const createMessage = async (req, res) => {
     res.status(400).json({ "ok": false, error })
   }
 }
+
+export const findOccurrencesInMessages = async (req, res) => {
+
+  const { query } = req.query;
+  console.log(req.query);
+  try {
+    // Regular exp para permitir las coincidencias por subString
+    const text = new RegExp(query, "i");
+    
+    // Busqueda en texto
+    const messageMatches = await MessageModel.find({ text });
+
+    if (messageMatches.length === 0) return res.status(404).json({ ok: false, msg: 'no matches'});
+
+    return res.status(200).json({ ok: true, result: messageMatches })
+
+  } catch (error) {
+    return res.status(404).json({ ok: false, msg: 'no matches', error: error.message });
+  }
+};

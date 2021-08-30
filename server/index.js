@@ -46,32 +46,31 @@ const io = new Server(httpServer, {
 });
   
 io.on('connect', (socket) => {
-  console.log("We have a new connection :)");
+  console.log("We have a new connection ...");
 
   socket.on('join', ({ username }, callback) => {
 
-    console.log(username);
     const {error, user } =  addUser( {id: socket.id , username, room: "liveroom"} )
     
     if (error) return callback(error)
     
     // le da la bienvenida al usuario que se conectó
-    socket.emit('NEW_MESSAGE', { username: 'admin', text: `@${user.username}, welcome to the room`, createdAt: new Date});
+    socket.emit('NEW_MESSAGE', { username: 'admin', text: `@${user.username}, welcome to the room!`, createdAt: new Date});
     // Le dice a todos los usuarios de su sala que el nuevo usuario se ha unido
     socket.broadcast.to("liveroom").emit('NEW_MESSAGE', { username: 'admin', text: `@${user.username}, has joined!`, createdAt: new Date });
     socket.join(user.room);
-    io.to(user.room).emit('roomData', { room: user.room, users: getUsersInRoom("liveroom") })
+    io.to(user.room).emit('LISTEN_ROOM', { room: user.room, users: getUsersInRoom("liveroom") })
 
     callback();
   })
 
   setInstance(io)
-  // emmitMessage(socket);
 
   socket.on('disconnect', () => {
     const user = removeUser(socket.id);
     if (user) {
       io.to("liveroom").emit('NEW_MESSAGE', { username: 'admin', text: `@${user.username}, has left!`, createdAt: new Date });
+      io.to(user.room).emit('LISTEN_ROOM', { room: user.room, users: getUsersInRoom("liveroom") })
     }
     
   })
