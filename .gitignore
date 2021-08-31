@@ -3,6 +3,7 @@
 /server/node_modules
 /client/dist
 /server/dist
+/client/package-lock.json
 
 
 # local env files
