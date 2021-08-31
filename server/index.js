@@ -86,6 +86,7 @@ io.on('connect', (socket) => {
 
   // It emits the automatic disconnection event that removes the user from the list of users in the room
   socket.on('disconnect', () => {
+    const user = removeUser(socket.id);
     if (user) {
       io.to("liveroom").emit('NEW_MESSAGE', { username: 'admin', text: `@${user.username}, has left!`, createdAt: new Date });
       io.to(user.room).emit('LISTEN_ROOM', { room: user.room, users: getUsersInRoom("liveroom") })

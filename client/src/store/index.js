@@ -4,7 +4,7 @@ import axios from 'axios';
 
 Vue.use(Vuex);
 
-const authUrl = 'http://localhost:4000/api';
+const authUrl = `${process.env.VUE_APP_API_URL}api`;
 
 export default new Vuex.Store({
    state: {

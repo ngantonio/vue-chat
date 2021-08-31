@@ -10,7 +10,7 @@ import 'bootstrap-vue/dist/bootstrap-vue.css';
 
 Vue.config.productionTip = false;
 Vue.prototype.$http = Axios;
-Vue.prototype.$http.defaults.baseURL = 'http://localhost:4000/api';
+Vue.prototype.$http.defaults.baseURL = `${process.env.VUE_APP_API_URL}api`;
 
 Vue.use(BootstrapVue);
 Vue.use(BootstrapVueIcons)
