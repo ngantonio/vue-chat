@@ -6,21 +6,34 @@
       <p>Live Chat</p>
     </div>
     <div class="bar__info__right">
-      <button @click="searchBtn">Search</button>
+      <b-button pill variant="success" @click="searchBtn">
+        <b-icon-search></b-icon-search>
+      </b-button>
     </div>
   </div>
   <div v-else class="bar__search">
     <b-row class="">
       <b-col lg="3" md="4"  xs="2">
-        <button @click="backBtn" >Back</button>
+        <b-button pill variant="secondary" @click="backBtn">
+          <b-icon-arrow-left-circle></b-icon-arrow-left-circle>
+        </b-button>
       </b-col>
-
+     
       <b-col lg="6" md="4"  xs="2">
-        <input type="text" v-model="searchText" class="input-group">
+        <b-form-input 
+          type="text" 
+          v-model="searchText"
+          placeholder="Type a word and press search ..." 
+          size="sm"
+          @keyup.enter="searchText !== ''? goSearch() : null"
+          > 
+          </b-form-input>
       </b-col>
 
       <b-col lg="3" md="4"  xs="2" align="right">
-        <button @click="goSearch">Go</button>
+        <b-button pill variant="success" @click="goSearch">
+          <b-icon-search></b-icon-search>
+        </b-button>
       </b-col>
     </b-row>
 
@@ -32,17 +45,11 @@
 import { mapGetters, mapActions } from 'vuex'
 export default {
   name: 'BarChat',
-  props: {
-    msg: String,
-  },
   data(){
     return{
       showSearchBar: false,
       searchText: ''
     }
-  },
-  created(){
-
   },
   methods:{
     ...mapActions(['setOnlineUsers', 'setSearchContext', 'switchContext']),

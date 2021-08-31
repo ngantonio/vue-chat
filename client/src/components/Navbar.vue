@@ -32,6 +32,9 @@ export default {
       username: '',
     }
   },
+  props: {
+    socket: null,
+  },
   created(){
     this.username = this.getUser().username;
   },
@@ -41,7 +44,12 @@ export default {
 
     Logout(){
       this.logout()
-      this.$router.push('/')
+      this.socket.emit('logout', (error) => {
+        if(error) {
+          console.log(error)
+        }
+      });
+      location.reload(); 
     }
   }
 };

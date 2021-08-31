@@ -24,9 +24,8 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import io from 'socket.io-client'
 import moment from 'moment';
-var socket = io.connect('http://localhost:4000');
+
 
 export default {
   name: 'MessageList',
@@ -34,6 +33,9 @@ export default {
     return {
       username_local: '',
     };
+  },
+  props: {
+    socket: null,
   },
 
   async created() {
@@ -64,7 +66,7 @@ export default {
      
     },
     listenNewMessages(){
-      socket.on("NEW_MESSAGE", fetchedData => {
+      this.socket.on("NEW_MESSAGE", fetchedData => {
         /**
          * Si estoy en un contexto de busqueda, quiero que los mensajes que 
          * vayan llegando se almacenenen en otra lista, y que no se haga scroll
@@ -82,7 +84,7 @@ export default {
     /** Evento para unirse a la sala */
     joinRoom(){
       const username = this.username_local;
-      socket.emit('join', { username }, (error) => {
+      this.socket.emit('join', { username }, (error) => {
         if(error) {
           console.log(error)
         }
@@ -102,7 +104,7 @@ export default {
     },
     /** Listener para almacenar cada vez que usuario entra o sale del chat */
     listenToRoomUsers(){
-      socket.on("LISTEN_ROOM", ( data ) => {
+      this.socket.on("LISTEN_ROOM", ( data ) => {
         this.setOnlineUsers(data.users)
       })
     },

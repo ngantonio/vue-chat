@@ -1,6 +1,6 @@
 <template>
   <div>
-  <Navbar />
+  <Navbar :socket="socket" />
   <!-- START CHAT PAGE  -->
   <div class="container">
     <b-row>
@@ -17,7 +17,7 @@
         <div class="outer__container">
           <div class="chat__container">
             <BarChat />
-            <MessageList />
+            <MessageList :socket="socket" />
             <MessageInput />
           </div>
         </div>
@@ -35,6 +35,7 @@ import Navbar from '@/components/Navbar.vue';
 import BarChat from '@/components/BarChat.vue';
 import MessageList from '@/components/MessageList.vue';
 import MessageInput from '@/components/MessageInput.vue';
+import io from 'socket.io-client'
 
 export default {
   components: {
@@ -43,6 +44,15 @@ export default {
     MessageList,
     MessageInput,
   },
+  data(){
+    return{
+      socket: null
+    }
+  },
+  created(){
+    this.socket = io.connect('http://localhost:4000');
+  },
+
   computed: mapGetters(['onlineUsers']), 
 
 };
