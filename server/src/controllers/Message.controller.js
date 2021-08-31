@@ -2,9 +2,7 @@ import MessageModel from '../models/Message.model.js'
 import { getInstance } from '../socketHandler.js'
 
 
-
 export const getAllMessages = async (req, res) => {
-  
   try {
     const messages = await MessageModel.find().sort({ createdAt: 1 })
     return res.json({ ok: true, messages });
@@ -26,6 +24,7 @@ export const createMessage = async (req, res) => {
     // save Message
     await newMessage.save();
 
+    // Emitting the NEW_MESSAGE event every time a message is saved in the database
     const instance = getInstance();
     instance.to('liveroom').emit('NEW_MESSAGE', { username: newMessage.username, text: newMessage.text, createdAt: newMessage.createdAt  })
 
@@ -42,14 +41,13 @@ export const findOccurrencesInMessages = async (req, res) => {
   const { query } = req.query;
   console.log(req.query);
   try {
-    // Regular exp para permitir las coincidencias por subString
+    // Regular exp to allow matches by subString
     const text = new RegExp(query, "i");
     
-    // Busqueda en texto
-    const messageMatches = await MessageModel.find({ text });
-
-    if (messageMatches.length === 0) return res.status(404).json({ ok: false, msg: 'no matches'});
-
+    // Search in text
+    const messageMatches = await MessageModel.find({ text }).sort({ createdAt: 1 });
+    if (messageMatches.length === 0) return res.status(404).json({ ok: false, msg: 'no matches' });
+    
     return res.status(200).json({ ok: true, result: messageMatches })
 
   } catch (error) {

@@ -4,17 +4,17 @@ import cors from 'cors';
 import { Server } from 'socket.io';
 import { createServer } from 'http';
 
+/** Import routes and user management methods */
 import messagesRoutes from './src/routes/Message.routes.js'
 import authRoutes from './src/routes/Auth.routes.js'
-import indexRoute from './src/routes/Index.routes.js'
 
 import {
   addUser,
   removeUser,
-  getUser,
   getUsersInRoom
 } from './src/users.js';
 
+/** Import socket handler */
 import { setInstance } from './src/socketHandler.js'
 
 // create server
@@ -28,14 +28,14 @@ connectDB();
 // cors enabling
 api.use(cors());
 
-// configure middlewares
+// configure middleware
 api.use(json({extended: true }))
 
 // Create and configure routes and Endpoints 
-api.use('/', indexRoute)
 api.use('/api/messages', messagesRoutes)
 api.use('/api/auth', authRoutes)
 
+// create and configure the socket instance 
 const io = new Server(httpServer, {
   cors: {
     origin: "*",
@@ -45,36 +45,52 @@ const io = new Server(httpServer, {
   }
 });
   
+// Initialize and make the socket listen to chat events
 io.on('connect', (socket) => {
   console.log("We have a new connection ...");
 
+  // Join event: register a user with his soketID and username in the local array of connected users
   socket.on('join', ({ username }, callback) => {
 
-    const {error, user } =  addUser( {id: socket.id , username, room: "liveroom"} )
-    
+    const { error, user } = addUser({ id: socket.id, username, room: "liveroom" })
+  
     if (error) return callback(error)
     
-    // le da la bienvenida al usuario que se conectó
+    // Welcomes the user who logged in
     socket.emit('NEW_MESSAGE', { username: 'admin', text: `@${user.username}, welcome to the room!`, createdAt: new Date});
-    // Le dice a todos los usuarios de su sala que el nuevo usuario se ha unido
+    // Informs all users of his room, exempting him, that the new user has joined
     socket.broadcast.to("liveroom").emit('NEW_MESSAGE', { username: 'admin', text: `@${user.username}, has joined!`, createdAt: new Date });
+    // join user to global room
     socket.join(user.room);
+    // An event is issued that returns the updated list of users in the global room
     io.to(user.room).emit('LISTEN_ROOM', { room: user.room, users: getUsersInRoom("liveroom") })
 
     callback();
   })
 
+  /**
+   * to be able to emit events after storing a new message in the database, 
+   * I need to export the socket instance so that it is accessible to the rest 
+   * of the modules of the app
+   */
   setInstance(io)
 
-  socket.on('disconnect', () => {
+  // It emits the manual disconnection event that removes the user from the list of users in the room
+  socket.on('logout', () => {
     const user = removeUser(socket.id);
     if (user) {
       io.to("liveroom").emit('NEW_MESSAGE', { username: 'admin', text: `@${user.username}, has left!`, createdAt: new Date });
       io.to(user.room).emit('LISTEN_ROOM', { room: user.room, users: getUsersInRoom("liveroom") })
     }
-    
+  })
+
+  // It emits the automatic disconnection event that removes the user from the list of users in the room
+  socket.on('disconnect', () => {
+    if (user) {
+      io.to("liveroom").emit('NEW_MESSAGE', { username: 'admin', text: `@${user.username}, has left!`, createdAt: new Date });
+      io.to(user.room).emit('LISTEN_ROOM', { room: user.room, users: getUsersInRoom("liveroom") })
+    }
   })
 })
 
-
-httpServer.listen(PORT, () => console.log(`Server running on port ${PORT}`))
+httpServer.listen(PORT, () => console.log(`Server running on port ${PORT} listening for connections`))
