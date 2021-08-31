@@ -4,7 +4,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background-color: #1565C0;
+  background-color: $accent;
   border-radius: 10px 10px 0 0;
   width: 100%;
   padding: 15px;
@@ -14,8 +14,13 @@
   flex: 0.5;
   display: flex;
   align-items: center;
-  margin-left: 5%;
-  color: white;
+  // margin-left: 5%;
+  color: $blank;
+  p {
+    font-size: 18px;
+    margin-bottom: 0px;
+  }
+  
 }
 
 .bar__info__right {
@@ -26,14 +31,15 @@
 }
 
 .bar__search{  
-  background-color: #1565C0;
+  background-color: $accent;
   border-radius: 10px 10px 0 0;
   width: 100%;
   padding: 15px;
-  color: white;
+  color: $blank;
 }
 
 
 .online__icon {
   margin-right: 5%;
+  
 }

@@ -1,13 +1,15 @@
 <template>
   <div>
   <Navbar />
- <div class="container">
+  <!-- START CHAT PAGE  -->
+  <div class="container">
     <b-row>
       <b-col md="4" class="users__col">
         <div class="outer__container">        
           <b-list-group>
-            <b-list-group-item v-for="(user, index) in onlineUsers" :key="index">@{{ user.username }}</b-list-group-item>
-            
+            <b-list-group-item v-for="(user, index) in onlineUsers" :key="index">
+              <img style="margin-right: 5px;" src="../assets/images/onlineIcon.png" alt="icon" />@{{ user.username }}
+            </b-list-group-item>
           </b-list-group>
         </div>
       </b-col>
@@ -22,6 +24,7 @@
       </b-col>
     </b-row>
   </div>
+  <!-- END CHAT PAGE  -->
 </div>
 
 </template>

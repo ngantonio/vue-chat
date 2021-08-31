@@ -38,8 +38,8 @@ export default {
 
   async created() {
     this.username_local = this.getUser().username;
-    await this.getHistoricMessages()
-    this.roomJoin()
+    await this.getHistoricalMessages()
+    this.joinRoom()
     this.listenNewMessages()
     this.listenToRoomUsers()
   },
@@ -56,7 +56,7 @@ export default {
     ...mapGetters(['getUser', 'onlineUsers']),
     ...mapActions(['setOnlineUsers', 'addNewMessage', 'setLiveChatContext']),
 
-    scroll(){
+    scrollDown(){
       this.$nextTick(() => {
         let container = this.$refs["chat_window"];
         container.scrollTop = container.scrollHeight;
@@ -67,20 +67,20 @@ export default {
       socket.on("NEW_MESSAGE", fetchedData => {
         /**
          * Si estoy en un contexto de busqueda, quiero que los mensajes que 
-         * vayan llegando se almacenenen en otra lista, y que el chat
-         * no haga scroll
+         * vayan llegando se almacenenen en otra lista, y que no se haga scroll
+         * cada vez que vayan llegando
          */
         if(this.searchContext){
-          console.log("esta entrando")
           this.addNewMessage(fetchedData)
         }else{
           this.addNewMessage(fetchedData)
-          this.scroll()
+          this.scrollDown()
         }
         
       })
     },
-    roomJoin(){
+    /** Evento para unirse a la sala */
+    joinRoom(){
       const username = this.username_local;
       socket.emit('join', { username }, (error) => {
         if(error) {
@@ -88,18 +88,19 @@ export default {
         }
       });
     },
-    async getHistoricMessages(){
+    /** Obtiene todos los mensajes guardados en la base de datos */
+    async getHistoricalMessages(){
       await this.$http
         .get('/messages/all')
         .then((resp) => {
           this.setLiveChatContext(resp.data.messages)
-          this.scroll()
+          this.scrollDown()
         })
         .catch((err) => {
           console.log(err);
         });
     },
-
+    /** Listener para almacenar cada vez que usuario entra o sale del chat */
     listenToRoomUsers(){
       socket.on("LISTEN_ROOM", ( data ) => {
         this.setOnlineUsers(data.users)
@@ -109,7 +110,3 @@ export default {
 };
 
 </script>
-
-<style>
-
-</style>

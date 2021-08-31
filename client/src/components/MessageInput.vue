@@ -1,4 +1,5 @@
 <template>
+  <!-- START CHAT INPUT -->
   <div class="form">
     <input
       class="input"
@@ -16,6 +17,7 @@
       Send
     </button>
   </div>
+ <!-- END CHAT INPUT -->
 </template>
 
 <script>
@@ -54,7 +56,3 @@ export default {
 };
 
 </script>
-
-<style>
-
-</style>

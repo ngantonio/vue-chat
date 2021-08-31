@@ -1,3 +1,4 @@
+// CHAT CONTAINER
 
 .outer__container {
   display: flex;
@@ -13,11 +14,9 @@
   justify-content: space-between;
   background: #FFFFFF;
   border-radius: 8px;
-  height: 90%;
+  height: 95%;
   width: 100%;
 }
-
-
 
 // INPUT
 
@@ -31,7 +30,7 @@
   border-radius: 0;
   padding: 2%;
   width: 80%;
-  font-size: 12px;
+  font-size: 14px;
 }
 
 input:focus, textarea:focus, select:focus{
@@ -39,7 +38,7 @@ input:focus, textarea:focus, select:focus{
 }
 
 .send__btn {
-  color: #fff !important;
+  color: $blank !important;
   text-transform: uppercase;
   text-decoration: none;
   background: $primary;

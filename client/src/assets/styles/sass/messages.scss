@@ -1,16 +1,15 @@
 // Messages Styles
 
-
 .list__container {
   padding: 5% 0;
   overflow-y: scroll;
 }
 
 .message__box {
-  background: #F3F3F3;
+  background: $boxColor;
   border-radius: 20px 0px 0px 20px;
   padding: 10px 15px;
-  color: white;
+  color: $blank;
   display: inline-block;
   max-width: 80%;
 
@@ -18,11 +17,15 @@
     width: 100%;
     letter-spacing: 0;
     float: left;
-    font-size: 12.5px;
+    font-size: 14px;
     margin-bottom: 0px;
+
+    @media (max-width: 990px) {
+      font-size: 12px;
+    }
+
   }
 }
-
 
 .text__message img {
   vertical-align: middle;
@@ -47,11 +50,11 @@
 .container__left {
   background: $primary;
   border-radius: 20px 0px 0px 20px;
-  color: white;
+  color: $blank;
 }
 
 .container__right {
-  background: #F3F3F3;
+  background: $boxColor;
   border-radius: 0px 20px 20px 0px;
   color: #353535;
 }

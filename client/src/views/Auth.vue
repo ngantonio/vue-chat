@@ -1,7 +1,7 @@
 <template>
+  <!-- START AUTH PAGE  -->
   <div class="container">
     <div class="met align-middle" center>
-      
         <b-row class="justify-content-center">
           <b-col md="12">
             <h2 class="text-center mb-4">¡Welcome!</h2>
@@ -10,16 +10,17 @@
                 v-model="username" 
                 id="inline-form-input-username" 
                 placeholder="Type a username ... "
-                @keyup.enter="loginOrRegister"
+                @keyup.enter="username !== '' ? loginOrRegister() : null"
                 ></b-form-input>
             </b-input-group>
             <div class="text-right">
-              <b-button block class="mt-4" variant="success" pill @click="loginOrRegister" >start chatting</b-button>
+              <b-button block class="mt-4" variant="success" pill @click="loginOrRegister" >Start Chatting</b-button>
             </div>
           </b-col>
         </b-row>
      </div>
   </div>
+  <!-- END AUTH PAGE  -->
 </template>
 
 <script>
@@ -30,14 +31,9 @@ export default {
       username: '',
     }
   },
-  created(){
-
-  },
   methods: {
     loginOrRegister(){
-
       if(this.username !== ''){
-
         this.$store.dispatch('login', {
           username: this.username.toLowerCase(),
         })
@@ -52,20 +48,13 @@ export default {
             console.log(err);
           });
         });
-
-      }else{
-        console.log("username vacio")
       }
-      
     }
   }
-
-
 };
 </script>
 
 <style lang="css" scoped>
-
 .container, .met{
   height: 100%;
 }
@@ -73,7 +62,5 @@ export default {
   display: flex;
   align-items: center;
 }
-
-
 </style>
 
