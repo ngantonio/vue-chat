@@ -50,7 +50,7 @@ export default {
     }
   },
   created(){
-    this.socket = io.connect('http://localhost:4000');
+    this.socket = io.connect(process.env.VUE_APP_API_URL);
   },
 
   computed: mapGetters(['onlineUsers']), 
