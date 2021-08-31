@@ -50,7 +50,7 @@ export default {
         }
       });
       // Se necesita recargar el navegador para que el servidor libere el socketId y renueve la conexión
-      location.reload(); 
+      location.replace('/');
     }
   }
 };
