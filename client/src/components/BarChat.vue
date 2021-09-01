@@ -70,11 +70,8 @@ export default {
             this.setSearchContext(resp.data.result)
           })
           .catch((err) => {
-            this.$bvToast.toast(`There are no matches for "${this.searchText}"`, {
-              title: 'Info',
-              variant: 'info',
-              solid: true,
-            })
+           const notFoundMessage = [{ username: 'admin', text: `Sorry, there are no coincidences for "${this.searchText}" 🙁. Press back button to return to chat`, createdAt: new Date }];
+           this.setSearchContext(notFoundMessage);
           });
         this.searchText = ''
       }

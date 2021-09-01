@@ -57,9 +57,9 @@ io.on('connect', (socket) => {
     if (error) return callback(error)
     
     // Welcomes the user who logged in
-    socket.emit('NEW_MESSAGE', { username: 'admin', text: `@${user.username}, welcome to the room!`, createdAt: new Date});
+    socket.emit('NEW_MESSAGE', { username: 'admin', text: `@${user.username}, welcome to the room 😎!`, createdAt: new Date});
     // Informs all users of his room, exempting him, that the new user has joined
-    socket.broadcast.to("liveroom").emit('NEW_MESSAGE', { username: 'admin', text: `@${user.username}, has joined!`, createdAt: new Date });
+    socket.broadcast.to("liveroom").emit('NEW_MESSAGE', { username: 'admin', text: `@${user.username}, has joined 😎!`, createdAt: new Date });
     // join user to global room
     socket.join(user.room);
     // An event is issued that returns the updated list of users in the global room

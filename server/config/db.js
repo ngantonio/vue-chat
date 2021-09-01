@@ -1,6 +1,6 @@
 import mongoose from 'mongoose'
 import * as dotenv from "dotenv";
-dotenv.config({ path: './config/variables.env' });
+dotenv.config({ path: './.env' });
 
 
 export default function connectDB() {
