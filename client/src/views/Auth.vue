@@ -14,7 +14,7 @@
                 ></b-form-input>
             </b-input-group>
             <div class="text-right">
-              <b-button block class="mt-4" variant="success" pill @click="loginOrRegister" >Start Chatting</b-button>
+              <b-button block class="mt-4" variant="success" pill @click="loginOrRegister" :disabled="!pressed" >Start Chatting</b-button>
             </div>
           </b-col>
         </b-row>
@@ -29,6 +29,7 @@ export default {
   data(){
     return {
       username: '',
+      pressed: 'false'
     }
   },
   methods: {
@@ -44,7 +45,8 @@ export default {
             username: this.username,
           })
           .then(() => this.$router.push('/chat'))
-          .catch((err) => {     
+          .catch((err) => {   
+            this.pressed = true;  
             console.log(err);
           });
         });

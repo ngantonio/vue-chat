@@ -6,37 +6,29 @@
       <p>Live Chat</p>
     </div>
     <div class="bar__info__right">
-      <b-button pill variant="success" @click="searchBtn">
+      <div @click="searchBtn" class="icon__container">
         <b-icon-search></b-icon-search>
-      </b-button>
+      </div>
     </div>
   </div>
   <div v-else class="bar__search">
     <b-row class="">
-      <b-col lg="3" md="4"  xs="2">
-        <b-button pill variant="secondary" @click="backBtn">
+
+      <b-col xs="2" md="3" lg="2">
+        <div @click="backBtn" class="icon__container">
           <b-icon-arrow-left-circle></b-icon-arrow-left-circle>
-        </b-button>
+        </div>
       </b-col>
      
-      <b-col lg="6" md="4"  xs="2">
-        <b-form-input 
+      <b-col sm="8" md="6" lg="9" >
+        <input 
           type="text" 
           v-model="searchText"
-          placeholder="Type a word and press search ..." 
-          size="sm"
-          @keyup.enter="searchText !== ''? goSearch() : null"
-          > 
-          </b-form-input>
-      </b-col>
-
-      <b-col lg="3" md="4"  xs="2" align="right">
-        <b-button pill variant="success" @click="goSearch">
-          <b-icon-search></b-icon-search>
-        </b-button>
+          class="input__search"
+          placeholder="Type a word and press enter ..." 
+          @keyup.enter="searchText !== ''? goSearch() : null"> 
       </b-col>
     </b-row>
-
   </div>
   <!-- END STATUS/SEARCH BAR -->
 </template>
